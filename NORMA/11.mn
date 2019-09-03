@@ -1,0 +1,73 @@
+// Questão 1: (2,5 pontos) [11.mn] Escreva um programa NORMA que receba de // entrada um número natural n e retorne a quantidade de ocorrências do    // padrão de bits 11
+// (possivelmente com sobreposição) na representação binária do número n.
+
+// Comandos disponíveis 
+// inc R              (R:=R+1)
+// dec R              (R:=R-1)
+// add R n            (R:=R+n)
+// sub R n            (R:=R-n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de operação
+
+// Testes disponíveis 
+// zero R             (R=0)
+// cmp  R n           (R=n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de teste
+
+// Zera o registrador recebido
+operation zera(ZeraA){
+  1: if zero ZeraA then goto 0 else goto 2
+  2: do dec ZeraA goto 1 
+}
+
+// Soma A com B usando C e salvando em A
+operation soma(A,B,C){
+  1: if zero B then goto 5 else goto 2
+  2: do dec  B goto 3
+  3: do inc  A goto 4
+  4: do inc  C goto 1
+  5: if zero C then goto 0 else goto 6
+  6: do dec  C goto 7
+  7: do inc  B goto 5
+}
+
+operation questao(A,MarcSucessivo,Quociente,TempA,ContadorOcorrencias,C){
+  //Zera registradores temporários
+  1: do zera(MarcSucessivo) goto 2
+  2: do zera(Quociente) goto 3
+  3: do zera(TempA) goto 4
+  4: do zera(ContadorOcorrencias) goto 5
+
+  //Salva A em TempA
+  5: do soma(TempA,A,C) goto 6
+
+  //Verifica o caso TempA = 0, se sim zera o MarcSucessivo
+  6: if zero TempA then goto 11 else goto 7 
+
+  //Verifica o caso TempA = 1, caso sim incrementa o MarcSucessivo
+  7: do dec TempA goto 8
+  8: if zero TempA then goto 12 else goto 9
+  9: do dec TempA goto 10
+  10: do inc Quociente goto 6
+
+  //Caso resto 0, zera o MarcSucessivo
+  11: do zera(MarcSucessivo) goto 15
+  
+  //Caso resto 1, soma um no MarcSucessivo e baseado nele incrementa o 
+  //ContadorOcorrencias
+  12: if zero MarcSucessivo then goto 13 else goto 14
+  13: do inc MarcSucessivo goto 15
+  14: do inc ContadorOcorrencias goto 15
+
+  //Atualiza o valor de TempA para nova rodada de subtrações se existir
+  15: if zero Quociente then goto 0 else goto 16
+  16: do zera(TempA) goto 17
+  17: do soma(TempA,Quociente,C) goto 18
+  18: do zera (Quociente) goto 6
+}
+
+//Programa principal
+main{
+ 1: do questao(X,MarcSucessivo,Quociente,TempA,ContadorOcorrencias,C) goto 2
+ 2: do zera(Y) goto 3
+ 3: do soma(Y,ContadorOcorrencias,C) goto 0  
+}

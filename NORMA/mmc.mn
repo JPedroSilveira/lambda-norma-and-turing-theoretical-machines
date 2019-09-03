@@ -1,0 +1,144 @@
+// Questão 2: (2,5 pontos)
+
+// Comandos disponíveis 
+// inc R              (R:=R+1)
+// dec R              (R:=R-1)
+// add R n            (R:=R+n)
+// sub R n            (R:=R-n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de operação
+
+// Testes disponíveis 
+// zero R             (R=0)
+// cmp  R n           (R=n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de teste
+
+//*********************************************************************
+// Zera o registrador recebido por parâmetro
+// 
+// Variáveis:
+//  Zera_A: Armazena o valor de entrada e o valor de saída
+//---------------------------------------------------------------------
+operation zera(Zera_A){
+  1: if zero Zera_A then goto 0 else goto 2
+  2: do dec Zera_A goto 1 
+}
+//*********************************************************************
+
+//*********************************************************************
+// Soma Soma_A com Soma_B, salvando o resultado em Soma_A
+// 
+// Variáveis:
+//  Soma_A: Armazena o valor de entrada e saída
+//  Soma_B: Armazena o valor de entrada
+//  Soma_C: Armazena o valor de C usado para manter o valor de Soma_B
+//---------------------------------------------------------------------
+operation soma(Soma_A,Soma_B){
+  1: if zero Soma_B then goto 5 else goto 2
+  2: do dec  Soma_B goto 3
+  3: do inc  Soma_A goto 4
+  4: do inc  Soma_C goto 1
+  5: if zero Soma_C then goto 0 else goto 6
+  6: do dec  Soma_C goto 7
+  7: do inc  Soma_B goto 5
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por dois e retorna o quociente e o resto
+//
+// Variaveis:
+//  DP2_A: Armazena o valor de entrada a ser dividido
+//  DP2_Div: Armazena o dividendo de entrada A para cálculos
+//  DP2_Qo: Armazena o quociente resultante da divisão
+//  DP2_Re: Armazena o resto resultante da divisão
+//---------------------------------------------------------------------
+operation divide_por_dois(DP2_A,DP2_Qo,DP2_Re){ 
+  //Zera valores iniciais
+  1: do zera(DP2_Div) goto 2
+  2: do zera(DP2_Qo) goto 3
+  3: do zera(DP2_Re) goto 4
+  //Salva A em DP2_Div
+  4: do soma(DP2_Div,DP2_A) goto 5
+  //Caso DP2_Div== 0 => Fim
+  5: if zero DP2_Div then goto 0 else goto 6
+  6: do dec DP2_Div goto 7
+  //Caso DP2_Div== 1 => DP2_Re
+  7: if zero DP2_Div then goto 8 else goto 9
+  //Salva o DP2_Re
+  8: do inc DP2_Re goto 0
+  //Soma DP2_Qo e continua subtração sucessiva
+  9: do dec DP2_Div goto 10
+  10: do inc DP2_Qo goto 5
+}
+//*********************************************************************
+
+//*********************************************************************
+// Realiza a divisão sucessiva de um número por 2 até alcançar um resultado 
+// ímpar
+//
+// Variáveis:
+//  DP2AI_A: Armazena o valor de entrada a ser dividido
+//  DP2AI_TA: Armazena o número que esta sendo dividido temporariamente
+//  DP2AI_Re: Armazena o resto da divisão
+//  DP2AI_Cd: Armazena o contador de divisão por 2 com resultado par
+//  DP2AI_Ri: Armazena o último resto e por fim o resto ímpar
+//  DP2AI_Qo: Armazena o resultado de cada divisão
+//---------------------------------------------------------------------
+operation dividir_por_2_ate_impar(DP2AI_A,DP2AI_Qo,DP2AI_Ri,DP2AI_Cd){
+  //Zera valores iniciais
+  1: do zera(DP2AI_TA) goto 2
+  2: do zera(DP2AI_Re) goto 3
+  3: do zera(DP2AI_Cd) goto 4
+  //Salva A em DP2AI_TA
+  4: do soma(DP2AI_TA, DP2AI_A) goto 5
+
+  //Inicia looping zerando o último resto e inicializando com DP2AI_TA 
+  5: do zera(DP2AI_Ri) goto 6
+  6: do soma(DP2AI_Ri, DP2AI_TA) goto 7 
+  
+  //Realiza a divisão
+  7: do divide_por_dois(DP2AI_TA,DP2AI_Qo,DP2AI_Re) goto 8
+
+  //Caso o resto seja 0, então continua as divisões sucessivas com o resultado
+  8: if zero DP2AI_Re then goto 9 else goto 0
+
+  //Salva o resultado da divisão em DP2AI_TA para nova divisão
+  9: do zera(DP2AI_TA) goto 10
+  10: do soma(DP2AI_TA, DP2AI_Qo) goto 11
+
+  //Incrementa o contador de divisões com resultado par
+  11: do inc DP2AI_Cd goto 5
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dada uma entrada, calcula o valor de Xo e Yo baseado na equação:
+// X := (2^Xo) * (2*Yo + 1) - 1
+//
+// Variaveis:
+//  CXOEYO_X: armazena o valor de entrada, X
+//  CXOEYO_Xo: armazena o resultado de Xo
+//  CXOEYO_Yo: armazena o resultado de Yo
+//  CXOEYO_Ri: armazena o resto ímpar da operação de divisões sucessivas
+//  CXOEYO_Re: armazena o resto da divisão da última equação
+//---------------------------------------------------------------------
+operation calcular_xo_e_yo(CXOEYO_X,CXOEYO_Xo,CXOEYO_Yo){
+ //Realiza a subtração inicial (-1) da equação em X
+ 1: do inc CXOEYO_X goto 2
+ //Divide X por 2 sucessivamente até alcançar um resultado ímpar (resto = 1)
+ //Ao encontrar este resultado, Xo irá ser o número de vezes que se dividiu
+ //x para chegar a este resultado.
+ 2: do dividir_por_2_ate_impar(CXOEYO_X,CXOEYO_Yo,CXOEYO_Ri,CXOEYO_Xo) goto 3
+ //Decrementa o resultado ímpar para dividir por 2
+ //Esta operação se refere ao cálculo:
+ // 2*Yo + 1 = Resto ímpar
+ 3: do dec CXOEYO_Ri goto 4
+ 4: do divide_por_dois(CXOEYO_Ri,CXOEYO_Yo,CXOEYO_Re) goto 0
+}
+//*********************************************************************
+
+
+//*********************************************************************
+main{
+  1: do calcular_xo_e_yo(X,Xo,Yo) goto 0
+}
