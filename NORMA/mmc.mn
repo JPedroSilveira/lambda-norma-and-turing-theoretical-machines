@@ -33,13 +33,66 @@ operation zera(Zera_A){
 //  Soma_C: Armazena o valor de C usado para manter o valor de Soma_B
 //---------------------------------------------------------------------
 operation soma(Soma_A,Soma_B){
-  1: if zero Soma_B then goto 5 else goto 2
-  2: do dec  Soma_B goto 3
-  3: do inc  Soma_A goto 4
-  4: do inc  Soma_C goto 1
-  5: if zero Soma_C then goto 0 else goto 6
-  6: do dec  Soma_C goto 7
-  7: do inc  Soma_B goto 5
+  1: if zero Soma_B then goto 0 else goto 2
+  2: if zero Soma_B then goto 6 else goto 3
+  3: do dec  Soma_B goto 4
+  4: do inc  Soma_A goto 5
+  5: do inc  Soma_C goto 2
+  6: if zero Soma_C then goto 0 else goto 7
+  7: do dec  Soma_C goto 8
+  8: do inc  Soma_B goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Subtrai Subtrai_A com Subtrai_B, salvando o resultado em Subtrai_A
+// 
+// Variáveis:
+//  Subtrai_A: Armazena o valor de entrada 
+//  Subtrai_B: Armazena o valor de entrada
+//  Subtrai_C: Armazena o valor de Subtrai_C usado para manter Subtrai_B 
+//  Subtrai_R: Armazena o valor de saída
+//  de Subtrai_B
+//---------------------------------------------------------------------e
+operation subtrai(Subtrai_A,Subtrai_B,Subtrai_R){
+  1: do zera(Subtrai_R) goto 2
+  2: do zera(Subtrai_C) goto 3
+  3: do soma(Subtrai_R,Subtrai_A) goto 4 
+  4: if zero Subtrai_R then goto 9 else goto 5
+  5: if zero Subtrai_B then goto 9 else goto 6
+  6: do dec  Subtrai_B goto 7
+  7: do dec  Subtrai_R goto 8
+  8: do inc  Subtrai_C goto 4
+  9: if zero Subtrai_C then goto 0 else goto 10
+ 10: do dec  Subtrai_C goto 11
+ 11: do inc  Subtrai_B goto 9
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dado dois registradores, compara e retorna se o primeiro é menor
+// Variáveis:
+//  Menor_A: Armazena o valor de entrada
+//  Menor_B: Armazena o valor de entrada
+//  Menor_C: Armazena o resultado da subtração
+//---------------------------------------------------------------------
+test eh_menor(Menor_A,Menor_B){
+  1: do subtrai(Menor_A,Menor_B,Menor_C) goto 2
+  2: if zero Menor_C then goto 3 else goto false
+  3: do subtrai(Menor_B,Menor_A,Menor_C) goto 4
+  4: if zero Menor_C then goto false else goto true
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dado três registradores, compara os dois primeiros e retorna o valor
+// do maior no terceiro
+//---------------------------------------------------------------------
+test eh_igual(Igual_A,Igual_B){
+  1: do subtrai(Menor_A,Menor_B,Menor_C) goto 2
+  2: if zero Menor_C then goto 3 else goto false
+  3: do subtrai(Menor_B,Menor_A,Menor_C) goto 4
+  4: if zero Menor_C then goto true else goto false
 }
 //*********************************************************************
 
@@ -124,21 +177,59 @@ operation dividir_por_2_ate_impar(DP2AI_A,DP2AI_Qo,DP2AI_Ri,DP2AI_Cd){
 //---------------------------------------------------------------------
 operation calcular_xo_e_yo(CXOEYO_X,CXOEYO_Xo,CXOEYO_Yo){
  //Realiza a subtração inicial (-1) da equação em X
- 1: do inc CXOEYO_X goto 2
- //Divide X por 2 sucessivamente até alcançar um resultado ímpar (resto = 1)
- //Ao encontrar este resultado, Xo irá ser o número de vezes que se dividiu
+ 1:do inc CXOEYO_X goto 2
+ 
+ //Divide X por 2 sucessivamente até 
+ //alcançar um resultado ímpar (resto = 1)
+ //Ao encontrar este resultado, Xo irá ser o 
+ //número de vezes que se dividiu
  //x para chegar a este resultado.
- 2: do dividir_por_2_ate_impar(CXOEYO_X,CXOEYO_Yo,CXOEYO_Ri,CXOEYO_Xo) goto 3
+ 2:do dividir_por_2_ate_impar(CXOEYO_X,CXOEYO_Yo,CXOEYO_Ri,CXOEYO_Xo) goto 3
+ 
  //Decrementa o resultado ímpar para dividir por 2
  //Esta operação se refere ao cálculo:
  // 2*Yo + 1 = Resto ímpar
- 3: do dec CXOEYO_Ri goto 4
- 4: do divide_por_dois(CXOEYO_Ri,CXOEYO_Yo,CXOEYO_Re) goto 0
+ 3:do dec CXOEYO_Ri goto 4
+ 4:do divide_por_dois(CXOEYO_Ri,CXOEYO_Yo,CXOEYO_Re) goto 0
 }
 //*********************************************************************
 
-
 //*********************************************************************
+// Dado dois valores de entrada, cálcula o MMC entre estes 
+// Variáveis:
+//  CMMC_Xo: Armazena a entrada
+//  CMMC_Yo: Armazena a entrada
+//  CMMC_R: Armazena o resultado
+//  CMMC_Xo_T: Armazena o valor temporários do decréscimo de CMMC_Xo
+//  CMMC_Yo_T: Armazena o valor temporários do decréscimo de CMMC_Yo
+//  CMMC_Xo_S: Armazena o valor que será incrementado
+//  CMMC_Xo_C: Armazena o valor que permanecerá parado
+//---------------------------------------------------------------------
+operation calcula_mmc(CMMC_Xo, CMMC_Yo, CMMC_R){ 
+  //Zera os valores temporários e operacionais
+  1: do zera(CMMC_R) goto 2
+  2: if zero CMMC_Xo then goto 0 else goto 3
+  3: if zero CMMC_Yo then goto 0 else goto 4
+  4: do zera(CMMC_Xo_T) goto 5
+  5: do zera(CMMC_Yo_T) goto 6
+ 
+  //Salva os valores de entrada em registradores temporários
+  6: do soma(CMMC_Xo_T,CMMC_Xo) goto 7
+  7: do soma(CMMC_Yo_T,CMMC_Yo) goto 8
+
+  //Realiza somas sucessivas nos valores temporários Xo com X e Yo com Y
+  //até encontrar um múltiplo em comum 
+  8: if eh_menor(CMMC_Xo_T,CMMC_Yo_T) then goto 9 else goto 10
+  9: do soma(CMMC_Xo_T,CMMC_Xo) goto 8
+ 10: if eh_menor(CMMC_Yo_T,CMMC_Xo_T) then goto 11 else goto 12
+ 11: do soma(CMMC_Yo_T,CMMC_Yo) goto 8
+
+ //Soma o resultado encontrado em CMMC_R
+ 12: do soma(CMMC_R,CMMC_Xo_T) goto 0
+}
+//*********************************************************************
+
 main{
-  1: do calcular_xo_e_yo(X,Xo,Yo) goto 0
+  1: do calcular_xo_e_yo(X,Xo,Yo) goto 2
+  2: do calcula_mmc(Xo,Yo,Y) goto 0
 }
