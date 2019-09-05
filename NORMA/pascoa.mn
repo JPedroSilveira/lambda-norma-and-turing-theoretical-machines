@@ -1,0 +1,273 @@
+// Questão 3: (2,5 pontos)
+
+// Comandos disponíveis 
+// inc R              (R:=R+1)
+// dec R              (R:=R-1)
+// add R n            (R:=R+n)
+// sub R n            (R:=R-n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de operação
+
+// Testes disponíveis 
+// zero R             (R=0)
+// cmp  R n           (R=n)
+// foo(R1,R2,...,Rn)  chamada de subrotina de teste
+
+//*********************************************************************
+// Zera o registrador recebido por parâmetro
+// 
+// Variáveis:
+//  Zera_A: Armazena o valor de entrada e o valor de saída
+//---------------------------------------------------------------------
+operation zera(Zera_A){
+  1: if zero Zera_A then goto 0 else goto 2
+  2: do sub Zera_A 1000 goto 1 
+}
+//*********************************************************************
+
+//*********************************************************************
+// Soma Soma_A com Soma_B, salvando o resultado em Soma_A
+// 
+// Variáveis:
+//  Soma_A: Armazena o valor de entrada e saída
+//  Soma_B: Armazena o valor de entrada
+//  Soma_C: Armazena o valor de C usado para manter o valor de Soma_B
+//---------------------------------------------------------------------
+operation soma(Soma_A,Soma_B){
+  1: if zero Soma_B then goto 0 else goto 2
+  2: if zero Soma_B then goto 6 else goto 3
+  3: do dec  Soma_B goto 4
+  4: do inc  Soma_A goto 5
+  5: do inc  Soma_C goto 2
+  6: if zero Soma_C then goto 0 else goto 7
+  7: do dec  Soma_C goto 8
+  8: do inc  Soma_B goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Subtrai Subtrai_A com Subtrai_B, salvando o resultado em Subtrai_A 
+// 
+// Variáveis:
+//  Subtrai_A: Armazena o valor de entrada e saída
+//  Subtrai_B: Armazena o valor de entrada
+//  Subtrai_C: Armazena o valor de Subtrai_C usado para manter Subtrai_B 
+//  de Subtrai_B
+//---------------------------------------------------------------------e
+operation subtrai(Subtrai_A,Subtrai_B){
+  //Zera variáveis iniciais
+  1: do zera(Subtrai_C) goto 2
+
+  //Inicia o decréscimo sucessivo em A conforme tamanho de B
+  2: if zero Subtrai_A then goto 7 else goto 3
+  3: if zero Subtrai_B then goto 7 else goto 4
+  4: do dec  Subtrai_B goto 5
+  5: do dec  Subtrai_A goto 6
+  6: do inc  Subtrai_C goto 2
+  7: if zero Subtrai_C then goto 0 else goto 8
+  8: do dec  Subtrai_C goto 9
+  9: do inc  Subtrai_B goto 7
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dado dois registradores, compara e retorna se o primeiro é menor
+// Variáveis:
+//  Menor_A: Armazena o valor de entrada
+//  Menor_B: Armazena o valor de entrada
+//  Menor_C: Armazena temporariamente o Menor_A
+//  Menor_D: Armazena temporariamente o Menor_B
+//---------------------------------------------------------------------
+test eh_menor(Menor_A,Menor_B){
+  //Zera os valores temporários
+  1: do zera(Menor_C) goto 2
+  2: do zera(Menor_D) goto 3
+  //Salva A e B em variáveis temporárias
+  3: do soma(Menor_C,Menor_A) goto 4
+  4: do soma(Menor_D,Menor_B) goto 5
+  //Começa o teste por subtração
+  5: do subtrai(Menor_C,Menor_B) goto 6
+  6: if zero Menor_C then goto 7 else goto false
+  7: do subtrai(Menor_D,Menor_A) goto 8
+  8: if zero Menor_D then goto false else goto true
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dado três registradores, compara os dois primeiros e retorna o valor
+// do maior no terceiro
+// Variáveis:
+//  Igual_A: Armazena o valor de entrada a ser subtraído
+//  Igual_B: Armazena o valor de entrada que irá subtrair Igual_A
+//  Igual_C: Armazena temporariamente o Igual_A
+//  Igual_D: Armazena temporariamente o Igual_B
+//---------------------------------------------------------------------
+test eh_igual(Igual_A,Igual_B){
+  //Zera valores temporários
+  1: do zera(Igual_C) goto 2
+  2: do zera(Igual_D) goto 3
+  
+  //Salva Igual_A e Igual_B em registradores temporários
+  3: do soma(Igual_C, Igual_A) goto 4
+  4: do soma(Igual_D, Igual_B) goto 5
+  
+  //Inicia a validação por subtrações
+  5: do subtrai(Igual_C,Igual_B) goto 6
+  6: if zero Igual_C then goto 7 else goto false
+  7: do subtrai(Igual_D,Igual_A) goto 8
+  8: if zero Igual_D then goto true else goto false
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por outro e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS_A: Entrada, dividendo
+//  DVS_B: Entrada, divisor
+//  DVS_Q: Saída, quociente
+//  DVS_R: Saída, resto
+//---------------------------------------------------------------------
+operation divisao(DVS_A,DVS_B,DVS_Q,DVS_R){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS_Q) goto 2
+  2: do zera(DVS_R) goto 10
+
+  //Valida caso especial, divisão por zero
+ 10: if zero DVS_A then goto 0 else goto 13
+
+  //Salva A em R que no final será o resto
+ 13: do soma(DVS_R, DVS_A) goto 15
+
+  //Verifica se R(A) é maior que B
+ 15: if eh_menor(DVS_R,DVS_B) then goto 0 else goto 16
+ 16: do subtrai(DVS_R,DVS_B) goto 17
+ 17: do inc DVS_Q goto 15
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por outro e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS19_A: Entrada, dividendo
+//  DVS19_B: Armazena o valor 19
+//  DVS19_Q: Saída, quociente
+//  DVS19_R: Saída, resto
+//---------------------------------------------------------------------
+operation divisao_19(DVS19_A,DVS19_Q,DVS19_R){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS19_Q) goto 2
+  2: do zera(DVS19_R) goto 3
+  3: do add DVS19_B 19 goto 10
+
+  //Valida caso especial, divisão por zero
+ 10: if zero DVS19_A then goto 0 else goto 13
+
+  //Salva A em R que no final será o resto
+ 13: do soma(DVS19_R, DVS19_A) goto 15
+
+  //Verifica se R(A) é maior que B
+ 15: if eh_menor(DVS19_R,DVS19_B) then goto 0 else goto 16
+ 16: do sub DVS19_R 19 goto 17
+ 17: do inc DVS_Q goto 15
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica um número por outro e retorna o resultado em uma terceira
+// entrada
+//
+// Variaveis:
+//  DVS_A: Entrada, dividendo
+//  DVS_B: Entrada, divisor
+//  DVS_Q: Saída, quociente
+//  DVS_R: Saída, resto
+//---------------------------------------------------------------------
+operation multiplica(MLT_A,MLT_B,MLT_R){ 
+  //Zera valores de saída e temporários
+  1: do zera(MLT_R) goto 2
+  2: do zera(MLT_C) goto 14
+
+  //Salva B em C para manter o valor do registrador
+ 14: do soma(MLT_C, MLT_B) goto 15
+
+  //Enquando C não for Zero soma A em R
+ 15: if zero MLT_C then goto 0 else goto 16
+ 16: do soma(MLT_R,MLT_A) goto 17
+ 17: do dec MLT_C goto 15
+}
+//*********************************************************************
+
+main{
+  1: do add D19 19 goto 2
+  2: do add D100 100 goto 3
+  3: do add D4 4 goto 4
+  4: do add D25 25 goto 5
+  5: do add D3 3 goto 6
+  6: do add D30 30 goto 7
+  7: do add D7 7 goto 8
+  8: do add D451 451 goto 9
+  9: do add D31 31 goto 10
+ 10: do add D2 2 goto 11
+ 11: do add D11 11 goto 12
+ 12: do add D22 22 goto 14
+
+ // [a = n mod 19]
+ 14: do divisao(X,D19,Null,A) goto 0
+ // [b = n div 100] and [c = n mod 100]
+ 15: do divisao(X,D100,B,C) goto 16
+ // [d = b div 4] and [e = b mod 4]
+ 16: do divisao(B,D4,D,E) goto 17
+ // [f = (b + 8) div 25]
+ 17: do soma(TempB, B) goto 18
+ 18: do add TempB 8 goto 19
+ 19: do divisao(TempB,D25,F,Null) goto 20
+ // [g = (b + 1 − f) div 3]
+ 20: do zera(TempB) goto 21
+ 21: do inc TempB goto 22
+ 22: do subtrai(TempB,F) goto 23
+ 23: do divisao(TempB,D3,G,Null) goto 24
+ // [h = (19a + b + 15 − d − g) mod 30]
+ 24: do multiplicacao(A,D19,TempA) goto 25
+ 25: do soma(TempA,B) goto 26
+ 26: do soma(TempA,D15) goto 27
+ 27: do subtrai(TempA,D) goto 28
+ 28: do subtrai(TempA,G) goto 29
+ 29: do divisao(TempA,D30,Null,H) goto 30
+ // [i = c div 4] and [k = c mod 4]
+ 30: do divisao(C,D4,I,K) goto 31
+ // [l = (32 + 2e + 2i − h − k) mod 7]
+ 31: do multiplicacao(E,D2,TempE) goto 32
+ 32: do soma(TempE,D32) goto 33
+ 33: do multiplicacao(I,D2,TempI) goto 34
+ 34: do soma(TempE,TempI) goto 35
+ 35: do subtrai(TempE,H) goto 36
+ 36: do subtrai(TempE,K) goto 37
+ 37: do divisao(TempE,D7,Null,L) goto 38
+ // [m = (a + 11h + 22l) div 451]
+ 38: do multiplicacao(L,D22,TempL) goto 39
+ 39: do multiplicacao(H,D11,TempH) goto 40
+ 40: do soma(TempL,A) goto 41
+ 41: do soma(TempL,TempH) goto 42
+ 42: do divisao(TempL,D451,M,Null) goto 43
+ // [mês = (h + l + 114 − 7m) div 31] 
+ // and
+ // [dia = ((h + l + 114 − 7m) mod 31) + 1]
+ 43: do add TempMes 114 goto 44
+ 44: do soma(TempMes,H) goto 45
+ 45: do soma(TempMes,L) goto 46
+ 46: do multiplica(M,D7,TempM) goto 47
+ 47: do subtrai(TempMes,TempM) goto 48
+ 48: do divisao(TempMes,D31,Mes,Dia) goto 49
+ 49: do inc Dia goto 50
+ // Codifica (dia,mês)
+ // [dia + mes]
+ 49: do soma(DiaMesUm,Dia) goto 50
+ 50: do soma(DiaMesUm,Mes) goto 51
+ // [dia + mes + 1]
+ 51: do soma(DiaMesDois,DiaMesUm) goto 52
+ 52: do inc DiaMesDois goto 53
+ 53: do multiplica(DiaMesUm,DiaMesDois,DiaMesTemp) goto 54
+ 54: do divisao(DiaMesTemp,D2,Y,Null) goto 55
+ 55: do soma(Y,Mes) goto 0
+}
