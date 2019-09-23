@@ -1,0 +1,535 @@
+// Questão 3: (2,5 pontos)
+
+//*********************************************************************
+// Zera o registrador recebido por parâmetro
+// 
+// Variáveis:
+//  Zera_A: Armazena o valor de entrada e o valor de saída
+//---------------------------------------------------------------------
+operation zera(Zera_A){
+  1: if zero Zera_A then goto 0 else goto 2
+  2: do sub Zera_A 10000 goto 1 
+}
+//*********************************************************************
+
+//*********************************************************************
+// Soma Soma_A com Soma_B, salvando o resultado em Soma_A
+// 
+// Variáveis:
+//  Soma_A: Armazena o valor de entrada e saída
+//  Soma_B: Armazena o valor de entrada
+//  Soma_C: Armazena o valor de C usado para manter o valor de Soma_B
+//---------------------------------------------------------------------
+operation soma(Soma_A,Soma_B){
+  1: if zero Soma_B then goto 0 else goto 2
+  2: if zero Soma_B then goto 6 else goto 3
+  3: do dec  Soma_B goto 4
+  4: do inc  Soma_A goto 5
+  5: do inc  Soma_C goto 2
+  6: if zero Soma_C then goto 0 else goto 7
+  7: do dec  Soma_C goto 8
+  8: do inc  Soma_B goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Subtrai Subtrai_A com Subtrai_B, salvando o resultado em Subtrai_A 
+// 
+// Variáveis:
+//  Subtrai_A: Armazena o valor de entrada e saída
+//  Subtrai_B: Armazena o valor de entrada
+//  Subtrai_C: Armazena o valor de Subtrai_C usado para manter Subtrai_B 
+//  de Subtrai_B
+//---------------------------------------------------------------------e
+operation subtrai(Subtrai_A,Subtrai_B){
+  //Zera variáveis iniciais
+  1: do zera(Subtrai_C) goto 2
+
+  //Inicia o decréscimo sucessivo em A conforme tamanho de B
+  2: if zero Subtrai_A then goto 7 else goto 3
+  3: if zero Subtrai_B then goto 7 else goto 4
+  4: do dec  Subtrai_B goto 5
+  5: do dec  Subtrai_A goto 6
+  6: do inc  Subtrai_C goto 2
+  7: if zero Subtrai_C then goto 0 else goto 8
+  8: do dec  Subtrai_C goto 9
+  9: do inc  Subtrai_B goto 7
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 19 e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS19_A: Entrada, dividendo
+//  DVS19_Q: Saída, quociente
+//  DVS19_TR: Saída, resto
+//  DVS19_R: Armazena o valor de A
+//---------------------------------------------------------------------
+operation divisao19ComResto(DVS19_A,DVS19_Q,DVS19_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS19_Q) goto 2
+  2: do zera(DVS19_R) goto 3
+  3: do zera(DVS19_TR) goto 4
+
+  //Valida caso especial, divisão por zero
+  4: if zero DVS19_A then goto 0 else goto 5
+
+  //Salva A em R que no final será o resto
+  5: do soma(DVS19_R, DVS19_A) goto 6
+
+  //Aplica subtração sucessiva para divisão
+  6: if cmp DVS19_TR 19 then goto 8 else goto 7
+  7: if zero DVS19_R then goto 0 else goto 10
+  8: do zera(DVS19_TR) goto 9
+  9: do inc DVS19_Q goto 7
+ 10: do inc DVS19_TR goto 11
+ 11: do dec DVS19_R goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 4 e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS4_A: Entrada, dividendo
+//  DVS4_Q: Saída, quociente
+//  DVS4_TR: Saída, resto
+//  DVS4_R: Armazena o valor de A
+//---------------------------------------------------------------------
+operation divisao4ComResto(DVS4_A,DVS4_Q,DVS4_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS4_Q) goto 2
+  2: do zera(DVS4_R) goto 3
+  3: do zera(DVS4_TR) goto 4
+
+  //Valida caso especial, divisão por zero
+  4: if zero DVS4_A then goto 0 else goto 5
+
+  //Salva A em R que no final será o resto
+  5: do soma(DVS4_R, DVS4_A) goto 6
+
+  //Aplica subtração sucessiva para divisão
+  6: if cmp DVS4_TR 4 then goto 8 else goto 7
+  7: if zero DVS4_R then goto 0 else goto 10
+  8: do zera(DVS4_TR) goto 9
+  9: do inc DVS4_Q goto 7
+ 10: do inc DVS4_TR goto 11
+ 11: do dec DVS4_R goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 25 e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS25_A: Entrada, dividendo
+//  DVS25_Q: Saída, quociente
+//  DVS25_TR: Saída, resto
+//  DVS25_R: Armazena o valor de A
+//---------------------------------------------------------------------
+operation divisao25ComResto(DVS25_A,DVS25_Q,DVS25_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS25_Q) goto 2
+  2: do zera(DVS25_R) goto 3
+  3: do zera(DVS25_TR) goto 4
+
+  //Valida caso especial, divisão por zero
+  4: if zero DVS25_A then goto 0 else goto 5
+
+  //Salva A em R que no final será o resto
+  5: do soma(DVS25_R, DVS25_A) goto 6
+
+  //Aplica subtração sucessiva para divisão
+  6: if cmp DVS25_TR 25 then goto 8 else goto 7
+  7: if zero DVS25_R then goto 0 else goto 10
+  8: do zera(DVS25_TR) goto 9
+  9: do inc DVS25_Q goto 7
+ 10: do inc DVS25_TR goto 11
+ 11: do dec DVS25_R goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 4 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS4D_A: Entrada, dividendo
+//  DVS4D_Q: Saída, quociente
+//  DVS4D_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao4ComRestoDestrutiva(DVS4D_A,DVS4D_Q,DVS4D_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS4D_Q) goto 2
+  2: do zera(DVS4D_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS4D_TR 4 then goto 6 else goto 5
+  5: if zero DVS4D_A then goto 0 else goto 8
+  6: do zera(DVS4D_TR) goto 7
+  7: do inc DVS4D_Q goto 5
+  8: do inc DVS4D_TR goto 9
+  9: do dec DVS4D_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 100 e retorna o quociente e o resto
+//
+// Variaveis:
+//  DVS100_A: Entrada, dividendo
+//  DVS100_Q: Saída, quociente
+//  DVS100_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao100ComRestoDestrutiva(DVS100_A,DVS100_Q,DVS100_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS100_Q) goto 2
+  2: do zera(DVS100_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS100_TR 100 then goto 6 else goto 5
+  5: if zero DVS100_A then goto 0 else goto 8
+  6: do zera(DVS100_TR) goto 7
+  7: do inc DVS100_Q goto 5
+  8: do inc DVS100_TR goto 9
+  9: do dec DVS100_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 30 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS30_A: Entrada, dividendo
+//  DVS30_Q: Saída, quociente
+//  DVS30_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisaoPor30ComRestoDestrutiva(DVS30_A,DVS30_Q,DVS30_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS30_Q) goto 2
+  2: do zera(DVS30_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS30_TR 30 then goto 6 else goto 5
+  5: if zero DVS30_A then goto 0 else goto 8
+  6: do zera(DVS30_TR) goto 7
+  7: do inc DVS30_Q goto 5
+  8: do inc DVS30_TR goto 9
+  9: do dec DVS30_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 7 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS7_A: Entrada, dividendo
+//  DVS7_Q: Saída, quociente
+//  DVS7_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao7ComRestoDestrutiva(DVS7_A,DVS7_Q,DVS7_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS7_Q) goto 2
+  2: do zera(DVS7_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS7_TR 7 then goto 6 else goto 5
+  5: if zero DVS7_A then goto 0 else goto 8
+  6: do zera(DVS7_TR) goto 7
+  7: do inc DVS7_Q goto 5
+  8: do inc DVS7_TR goto 9
+  9: do dec DVS7_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 31 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS31_A: Entrada, dividendo
+//  DVS31_Q: Saída, quociente
+//  DVS31_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao31ComRestoDestrutiva(DVS31_A,DVS31_Q,DVS31_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS31_Q) goto 2
+  2: do zera(DVS31_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS31_TR 31 then goto 6 else goto 5
+  5: if zero DVS31_A then goto 0 else goto 8
+  6: do zera(DVS31_TR) goto 7
+  7: do inc DVS31_Q goto 5
+  8: do inc DVS31_TR goto 9
+  9: do dec DVS31_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 3 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS3_A: Entrada, dividendo
+//  DVS3_Q: Saída, quociente
+//  DVS3_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisaoPor3ComRestoDestrutiva(DVS3_A,DVS3_Q,DVS3_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS3_Q) goto 2
+  2: do zera(DVS3_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS3_TR 3 then goto 6 else goto 5
+  5: if zero DVS3_A then goto 0 else goto 8
+  6: do zera(DVS3_TR) goto 7
+  7: do inc DVS3_Q goto 5
+  8: do inc DVS3_TR goto 9
+  9: do dec DVS3_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 451 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS451_A: Entrada, dividendo
+//  DVS451_Q: Saída, quociente
+//  DVS451_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao451ComRestoDestrutiva(DVS451_A,DVS451_Q,DVS451_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS451_Q) goto 2
+  2: do zera(DVS451_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS451_TR 451 then goto 6 else goto 5
+  5: if zero DVS451_A then goto 0 else goto 8
+  6: do zera(DVS451_TR) goto 7
+  7: do inc DVS451_Q goto 5
+  8: do inc DVS451_TR goto 9
+  9: do dec DVS451_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Divide um número por 2 e retorna o quociente e o resto, zera a 
+// entrada
+//
+// Variaveis:
+//  DVS2_A: Entrada, dividendo
+//  DVS2_Q: Saída, quociente
+//  DVS2_TR: Saída, resto
+//---------------------------------------------------------------------
+operation divisao2ComRestoDestrutiva(DVS2_A,DVS2_Q,DVS2_TR){ 
+  //Zera valores de saída e temporários
+  1: do zera(DVS2_Q) goto 2
+  2: do zera(DVS2_TR) goto 4
+
+  //Aplica subtração sucessiva para divisão
+  4: if cmp DVS2_TR 2 then goto 6 else goto 5
+  5: if zero DVS2_A then goto 0 else goto 8
+  6: do zera(DVS2_TR) goto 7
+  7: do inc DVS2_Q goto 5
+  8: do inc DVS2_TR goto 9
+  9: do dec DVS2_A goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica a entrada por 19 e salva o resultado na mesma
+//
+// Variaveis:
+//  MLT_A: Entrada e Saída, multiplicando
+//---------------------------------------------------------------------
+operation multiplica19(MLT_A){ 
+  //Zera o contador
+  1: do zera(MLT_C) goto 2
+
+  //Soma A ao Contador
+  2: do soma(MLT_C,MLT_A) goto 3
+  3: do zera(MLT_A) goto 4
+
+  //Enquando C não for Zero soma 19 em A
+  4: if zero MLT_C then goto 0 else goto 5
+  5: do add MLT_A 19 goto 6
+  6: do dec MLT_C goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica a entrada por 11 e salva o resultado na mesma
+//
+// Variaveis:
+//  MLT_A: Entrada e Saída, multiplicando
+//---------------------------------------------------------------------
+operation multiplica11(MLT_A){ 
+  //Zera o contador
+  1: do zera(MLT_C) goto 2
+
+  //Soma A ao Contador
+  2: do soma(MLT_C,MLT_A) goto 3
+  3: do zera(MLT_A) goto 4
+
+  //Enquando C não for Zero soma 11 em A
+  4: if zero MLT_C then goto 0 else goto 5
+  5: do add MLT_A 11 goto 6
+  6: do dec MLT_C goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica a entrada por 22 e salva o resultado na mesma
+//
+// Variaveis:
+//  MLT_A: Entrada e Saída, multiplicando
+//---------------------------------------------------------------------
+operation multiplica22(MLT_A){ 
+  //Zera o contador
+  1: do zera(MLT_C) goto 2
+
+  //Soma A ao Contador
+  2: do soma(MLT_C,MLT_A) goto 3
+  3: do zera(MLT_A) goto 4
+
+  //Enquando C não for Zero soma 22 em A
+  4: if zero MLT_C then goto 0 else goto 5
+  5: do add MLT_A 22 goto 6
+  6: do dec MLT_C goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica a entrada por 7 e salva o resultado na mesma
+//
+// Variaveis:
+//  MLT_A: Entrada e Saída, multiplicando
+//---------------------------------------------------------------------
+operation multiplica7(MLT_A){ 
+  //Zera o contador
+  1: do zera(MLT_C) goto 2
+
+  //Soma A ao Contador
+  2: do soma(MLT_C,MLT_A) goto 3
+  3: do zera(MLT_A) goto 4
+
+  //Enquando C não for Zero soma 7 em A
+  4: if zero MLT_C then goto 0 else goto 5
+  5: do add MLT_A 7 goto 6
+  6: do dec MLT_C goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica a entrada por 2 e salva o resultado na mesma
+//
+// Variaveis:
+//  MLT_A: Entrada e Saída, multiplicando
+//---------------------------------------------------------------------
+operation multiplica2(MLT_A){ 
+  //Zera o contador
+  1: do zera(MLT_C) goto 2
+
+  //Soma A ao Contador
+  2: do soma(MLT_C,MLT_A) goto 3
+  3: do zera(MLT_A) goto 4
+
+  //Enquando C não for Zero soma 2 em A
+  4: if zero MLT_C then goto 0 else goto 5
+  5: do add MLT_A 2 goto 6
+  6: do dec MLT_C goto 4
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica um número por outro e retorna o resultado em uma terceira
+// entrada
+//
+// Variaveis:
+//  MLT_A: Entrada, multiplicando
+//  MLT_B: Entrada, multiplicador
+//  MLT_R: Saída, resultado
+//  MLT_C: Temporária
+//---------------------------------------------------------------------
+operation multiplica(MLT_A,MLT_B,MLT_R){ 
+  //Zera valores de saída e temporários
+  1: do zera(MLT_R) goto 2
+  2: do zera(MLT_C) goto 14
+
+  //Salva B em C para manter o valor do registrador
+ 14: do soma(MLT_C, MLT_B) goto 15
+
+  //Enquando C não for Zero soma A em R
+ 15: if zero MLT_C then goto 0 else goto 16
+ 16: do soma(MLT_R,MLT_A) goto 17
+ 17: do dec MLT_C goto 15
+}
+//*********************************************************************
+
+main{
+  // [a = n mod 19]
+  1: do divisao19ComResto(X,Null,A) goto 2
+  // [b = n div 100] and [c = n mod 100]
+  2: do divisao100ComRestoDestrutiva(X,B,C) goto 3  
+  // [d = b div 4] and [e = b mod 4]
+  3: do divisao4ComResto(B,D,E) goto 4
+  // [f = (b + 8) div 25]
+  4: do add B 8 goto 5
+  5: do divisao25ComResto(B,F,Null) goto 6
+  // [g = (b + 1 − f) div 3]
+  6: do sub B 7 goto 7
+  7: do soma(TempB, B) goto 8
+  8: do subtrai(TempB, F) goto 9
+  9: do divisaoPor3ComRestoDestrutiva(TempB,G,Null) goto 10
+ // [h = (19a + b + 15 − d − g) mod 30]
+ 10: do add B 14 goto 11
+ 11: do soma(TempA,A) goto 12
+ 12: do multiplica19(TempA) goto 13
+ 13: do soma(TempA,B) goto 14
+ 14: do subtrai(TempA,D) goto 15
+ 15: do subtrai(TempA,G) goto 16
+ 16: do divisaoPor30ComRestoDestrutiva(TempA,Null,H) goto 17
+ // [i = c div 4] and [k = c mod 4]
+ 17: do divisao4ComRestoDestrutiva(C,I,K) goto 18
+ // [l = (32 + 2e + 2i − h − k) mod 7]
+ 18: do multiplica2(E) goto 19
+ 19: do soma(E,I) goto 20
+ 20: do soma(E,I) goto 21
+ 21: do add E 32 goto 22
+ 22: do subtrai(E,K) goto 23
+ 23: do subtrai(E,H) goto 24
+ 24: do divisao7ComRestoDestrutiva(E,Null,L) goto 25
+ // [m = (a + 11h + 22l) div 451]
+ 25: do soma(TempH, H) goto 26
+ 26: do multiplica11(TempH) goto 27
+ 27: do soma(TempL,L) goto 28
+ 28: do multiplica22(TempL) goto 29
+ 29: do soma(A,TempH) goto 30
+ 30: do soma(A,TempL) goto 31
+ 31: do divisao451ComRestoDestrutiva(A,M,Null) goto 32
+ // [mês = (h + l + 114 − 7m) div 31] 
+ // and
+ // [dia = ((h + l + 114 − 7m) mod 31) + 1]
+ 32: do soma(H,L) goto 33
+ 33: do add H 114 goto 34
+ 34: do multiplica7(M) goto 35
+ 35: do subtrai(H,M) goto 36
+ 36: do divisao31ComRestoDestrutiva(H,Mes,Dia) goto 37
+ 37: do inc Dia goto 38
+ // Codifica (dia,mês)
+ // [Dia = Dia + Mes]
+ 38: do soma(Dia,Mes) goto 39
+ // [DiaT1 = Dia + Mes + 1]
+ 39: do soma(DiaT1,Dia) goto 40
+ 40: do inc DiaT1 goto 41
+ // [DiaMesTemp = Dia * DiaT1]
+ 41: do multiplica(Dia,DiaT1,DiaMesTemp) goto 42
+ // [Y = DiaMesTemp/2]
+ 42: do divisao2ComRestoDestrutiva(DiaMesTemp,Y,Null) goto 43
+ 43: do soma(Y,Mes) goto 0
+}

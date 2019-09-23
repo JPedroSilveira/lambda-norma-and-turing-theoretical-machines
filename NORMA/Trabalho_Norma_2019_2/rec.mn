@@ -1,0 +1,131 @@
+//Questao 4
+
+//*********************************************************************
+// Zera o registrador recebido por parâmetro
+// 
+// Variáveis:
+//  Zera_A: Armazena o valor de entrada e o valor de saída
+//---------------------------------------------------------------------
+operation zera(Zera_A){
+  1: if zero Zera_A then goto 0 else goto 2
+  2: do dec Zera_A goto 1 
+}
+//*********************************************************************
+
+//*********************************************************************
+// Soma Soma_A com Soma_B, salvando o resultado em Soma_A
+// 
+// Variáveis:
+//  Soma_A: Armazena o valor de entrada e saída
+//  Soma_B: Armazena o valor de entrada
+//  Soma_C: Armazena o valor de C usado para manter o valor de Soma_B
+//---------------------------------------------------------------------
+operation soma(Soma_A,Soma_B){
+  1: if zero Soma_B then goto 0 else goto 2
+  2: if zero Soma_B then goto 6 else goto 3
+  3: do dec  Soma_B goto 4
+  4: do inc  Soma_A goto 5
+  5: do inc  Soma_C goto 2
+  6: if zero Soma_C then goto 0 else goto 7
+  7: do dec  Soma_C goto 8
+  8: do inc  Soma_B goto 6
+}
+//*********************************************************************
+
+//*********************************************************************
+// Subtrai Subtrai_A com Subtrai_B, salvando o resultado em Subtrai_A 
+// 
+// Variáveis:
+//  Subtrai_A: Armazena o valor de entrada e saída
+//  Subtrai_B: Armazena o valor de entrada
+//  Subtrai_C: Armazena o valor de Subtrai_C usado para manter Subtrai_B 
+//  de Subtrai_B
+//---------------------------------------------------------------------e
+operation subtrai(Subtrai_A,Subtrai_B){
+  //Zera variáveis iniciais
+  1: do zera(Subtrai_C) goto 2
+
+  //Inicia o decréscimo sucessivo em A conforme tamanho de B
+  2: if zero Subtrai_A then goto 7 else goto 3
+  3: if zero Subtrai_B then goto 7 else goto 4
+  4: do dec  Subtrai_B goto 5
+  5: do dec  Subtrai_A goto 6
+  6: do inc  Subtrai_C goto 2
+  7: if zero Subtrai_C then goto 0 else goto 8
+  8: do dec  Subtrai_C goto 9
+  9: do inc  Subtrai_B goto 7
+}
+//*********************************************************************
+
+//*********************************************************************
+// Dado dois registradores, compara e retorna se o primeiro é menor
+// Variáveis:
+//  Menor_A: Armazena o valor de entrada
+//  Menor_B: Armazena o valor de entrada
+//  Menor_C: Armazena temporariamente o Menor_A
+//  Menor_D: Armazena temporariamente o Menor_B
+//---------------------------------------------------------------------
+test eh_menor(Menor_A,Menor_B){
+  //Zera os valores temporários
+  1: do zera(Menor_C) goto 2
+  2: do zera(Menor_D) goto 3
+  //Salva A e B em variáveis temporárias
+  3: do soma(Menor_C,Menor_A) goto 4
+  4: do soma(Menor_D,Menor_B) goto 5
+  //Começa o teste por subtração
+  5: do subtrai(Menor_C,Menor_B) goto 6
+  6: if zero Menor_C then goto 7 else goto false
+  7: do subtrai(Menor_D,Menor_A) goto 8
+  8: if zero Menor_D then goto false else goto true
+}
+//*********************************************************************
+
+//*********************************************************************
+// Multiplica um número por outro e retorna o resultado em uma terceira
+// entrada
+//
+// Variaveis:
+//  DVS_A: Entrada, dividendo
+//  DVS_B: Entrada, divisor
+//  DVS_Q: Saída, quociente
+//  DVS_R: Saída, resto
+//---------------------------------------------------------------------
+operation multiplica(MLT_A,MLT_B,MLT_R){ 
+  //Zera valores de saída e temporários
+  1: do zera(MLT_R) goto 2
+  2: do zera(MLT_C) goto 14
+
+  //Salva B em C para manter o valor do registrador
+ 14: do soma(MLT_C, MLT_B) goto 15
+
+  //Enquando C não for Zero soma A em R
+ 15: if zero MLT_C then goto 0 else goto 16
+ 16: do soma(MLT_R,MLT_A) goto 17
+ 17: do dec MLT_C goto 15
+}
+//*********************************************************************
+
+//Calcula 3^(REC_A-1) para x >= 1 e retorna 0 caso x = 0
+operation rec(REC_A, REC_R){
+  1: do zera(D3) goto 2
+  2: do add D3 3 goto 3
+  3: do zera(REC_TA) goto 4
+  4: do soma(REC_TA,REC_A) goto 5
+  5: do zera(REC_R) goto 6
+  6: do zera(REC_TR) goto 7
+  7: if zero REC_TA then goto 0 else goto 8
+  8: do dec REC_TA goto 9
+  9: if zero REC_TA then goto 10 else goto 11
+ 10: do inc REC_R goto 0
+ 11: do soma(REC_R,D3) goto 12
+ 12: do dec REC_TA goto 13
+ 13: if zero REC_TA then goto 0 else goto 14
+ 14: do multiplica(REC_R,D3,REC_TR) goto 15
+ 15: do zera(REC_R) goto 16
+ 16: do soma(REC_R,REC_TR) goto 12 
+}
+
+
+main{
+  1: do rec(X,Y) goto 0
+}
