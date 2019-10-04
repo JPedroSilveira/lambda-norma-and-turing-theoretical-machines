@@ -1,0 +1,57 @@
+let
+
+ true        =  \x y. x ;
+ false       =  \x y. y ;
+ if          =  \a b c. a b c ;
+ not         =  \a. a false true;
+ and         =  \a b. a b false;
+ or          =  \a b. a true b;
+ implies     =  \a b. a b true;
+ ifandonlyif =  \a b. a b (not b);
+ succ        =  \n p q. p (n p q);
+ add         =  \m n. m succ n;
+ mult        =  \m n. m (add n) 0;
+ exp         =  \m n. n m;
+ isZero      =  \n. n (\x.false) true;
+ pair        =  \m n b. b m n;
+ first       =  \p. p true;
+ second      =  \p. p false;
+ shiftInc    =  \p. pair (snd p) (succ (snd p));
+ pred        =  \n. fst (n shiftInc (pair 0 0));
+ empty       =  \x. true;
+ cons        =  \h t. pair h t;
+ isEmpty     =  \l.l (\x y.false);
+ head        =  first;
+ tail        =  second;
+ Y           =  \f.(\x.f(x x))(\x.f(x x));
+
+ descompactar_primeiros_rec = \M l. (if (isEmpty l)
+                                     empty
+                                     (cons (first (first l))
+                                           (M (tail l)))); 
+ descompactar_primeiros = Y descompactar_primeiros_rec;
+
+ descompactar_segundos_rec = \M l. (if (isEmpty l)
+                                     empty
+                                     (cons (second (first l))
+                                           (M (tail l))));
+
+ descompactar_segundos = Y descompactar_segundos_rec;
+  
+ descompactar = \l. (pair (descompactar_primeiros l)
+                          (descompactar_segundos  l));
+ 
+ teste_vazio = (descompactar empty);
+ teste_vazio_resultado = (pair empty empty);
+
+ teste_n_vazio = (descompactar 
+                   (cons (pair 1 2) 
+                         (cons (pair 3 4) empty)));
+ teste_n_vazio_resultado = (cons 
+                            (cons 1 (cons 3 empty))
+                            (cons 2 (cons 4 empty)));
+ 
+in 
+ teste_n_vazio
+ 
+                                                                                                             
