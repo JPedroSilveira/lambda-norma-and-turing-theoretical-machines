@@ -1,1 +1,1 @@
-INF05501_Teoria_da_Computacao_N_UFRGS_2019-2
+Exercícios desenvolvidos durante a disciplina de Teoria da Computação (INF-UFRGS)
