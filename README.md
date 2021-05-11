@@ -1,1 +1,3 @@
-Exercícios desenvolvidos durante a disciplina de Teoria da Computação (INF-UFRGS).
+# Teoria da Computação
+### Semestre: 2019/2
+#### Professor: Rafael Santos Coelho
